@@ -36,6 +36,7 @@ class Token(NamedTuple):
 
 def lookup_token_type(literal: str) -> TokenType:
     keywords: Dict[str, TokenType] = {
+        'procedimiento': TokenType.FUNCTION,
         'variable': TokenType.LET
     }
 
