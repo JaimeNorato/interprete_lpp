@@ -10,6 +10,15 @@ from lpp.lexer import Lexer
 
 class LexerTest(TestCase):
 
+    def validate_tes(self, source: str, expected_tokens: List[Token]) -> None:
+        lexer: Lexer = Lexer(source)
+
+        token: List[Token] = []
+        for i in range(len(expected_tokens)):
+            token.append(lexer.next_token())
+
+        self.assertEquals(token, expected_tokens)
+
     def test_illegal(self) -> None:
         source: str = '¡¿@'
 
@@ -45,10 +54,10 @@ class LexerTest(TestCase):
         source = '(){},;'
 
         expected_tokens: List[Token] = [
-            Token(TokenType.RPAREN, '('),
-            Token(TokenType.LPAREN, ')'),
-            Token(TokenType.RBRACE, '{'),
-            Token(TokenType.LBRACE, '}'),
+            Token(TokenType.LPAREN, '('),
+            Token(TokenType.RPAREN, ')'),
+            Token(TokenType.LBRACE, '{'),
+            Token(TokenType.RBRACE, '}'),
             Token(TokenType.COMMA, ','),
             Token(TokenType.SEMICOLON, ';'),
         ]
@@ -80,17 +89,17 @@ class LexerTest(TestCase):
             Token(TokenType.IDENT, 'suma'),
             Token(TokenType.ASSIGN, '='),
             Token(TokenType.FUNCTION, 'procedimiento'),
-            Token(TokenType.RPAREN, '('),
+            Token(TokenType.LPAREN, '('),
             Token(TokenType.IDENT, 'x'),
             Token(TokenType.COMMA, ','),
             Token(TokenType.IDENT, 'y'),
-            Token(TokenType.LPAREN, ')'),
-            Token(TokenType.RBRACE, '{'),
+            Token(TokenType.RPAREN, ')'),
+            Token(TokenType.LBRACE, '{'),
             Token(TokenType.IDENT, 'x'),
             Token(TokenType.PLUS, '+'),
             Token(TokenType.IDENT, 'y'),
             Token(TokenType.SEMICOLON, ';'),
-            Token(TokenType.LBRACE, '}'),
+            Token(TokenType.RBRACE, '}'),
             Token(TokenType.SEMICOLON, ';'),
         ]
 
@@ -106,21 +115,42 @@ class LexerTest(TestCase):
             Token(TokenType.IDENT, 'resultado'),
             Token(TokenType.ASSIGN, '='),
             Token(TokenType.IDENT, 'suma'),
-            Token(TokenType.RPAREN, '('),
+            Token(TokenType.LPAREN, '('),
             Token(TokenType.IDENT, 'dos'),
             Token(TokenType.COMMA, ','),
             Token(TokenType.IDENT, 'tres'),
-            Token(TokenType.LPAREN, ')'),
+            Token(TokenType.RPAREN, ')'),
             Token(TokenType.SEMICOLON, ';'),
         ]
 
         self.validate_tes(source, expected_tokens)
 
-    def validate_tes(self, source: str, expected_tokens: List[Token]) -> None:
-        lexer: Lexer = Lexer(source)
+    def test_control_statement(self) -> None:
+        source: str = '''
+            si (5 < 10) {
+                regresa verdadero;
+            } si_no {
+                regresa falso;
+            }
+        '''
 
-        token: List[Token] = []
-        for i in range(len(expected_tokens)):
-            token.append(lexer.next_token())
-
-        self.assertEquals(token, expected_tokens)
+        expected_tokens: List[Token] = [
+            Token(TokenType.IF, 'si'),
+            Token(TokenType.LPAREN, '('),
+            Token(TokenType.INT, '5'),
+            Token(TokenType.LT, '<'),
+            Token(TokenType.INT, '10'),
+            Token(TokenType.RPAREN, ')'),
+            Token(TokenType.LBRACE, '{'),
+            Token(TokenType.RETURN, 'regresa'),
+            Token(TokenType.TRUE, 'verdadero'),
+            Token(TokenType.SEMICOLON, ';'),
+            Token(TokenType.RBRACE, '}'),
+            Token(TokenType.ELSE, 'si_no'),
+            Token(TokenType.LBRACE, '{'),
+            Token(TokenType.RETURN, 'regresa'),
+            Token(TokenType.FALSE, 'falso'),
+            Token(TokenType.SEMICOLON, ';'),
+            Token(TokenType.RBRACE, '}'),
+        ]
+        self.validate_tes(source,expected_tokens)

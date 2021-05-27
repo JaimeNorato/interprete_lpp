@@ -25,17 +25,19 @@ class Lexer:
         elif match(r'^$', self._character):  # valida el token vació o final
             token = Token(TokenType.EOF, self._character)
         elif match(r'^\($', self._character):  # valida el token el (
-            token = Token(TokenType.RPAREN, self._character)
-        elif match(r'^\)$', self._character):  # valida el token el )
             token = Token(TokenType.LPAREN, self._character)
-        elif match(r'^}$', self._character):  # valida el token el }
-            token = Token(TokenType.LBRACE, self._character)
+        elif match(r'^\)$', self._character):  # valida el token el )
+            token = Token(TokenType.RPAREN, self._character)
         elif match(r'^{$', self._character):  # valida el token el {
+            token = Token(TokenType.LBRACE, self._character)
+        elif match(r'^}$', self._character):  # valida el token el }
             token = Token(TokenType.RBRACE, self._character)
         elif match(r'^,$', self._character):  # valida el token el ,
             token = Token(TokenType.COMMA, self._character)
         elif match(r'^;$', self._character):  # valida el token el ;
             token = Token(TokenType.SEMICOLON, self._character)
+        elif match(r'^<$', self._character):  # valida el token el <
+            token = Token(TokenType.LT, self._character)
         elif self._is_letter(self._character):
             literal = self._read_identifier()
             token_type = lookup_token_type(literal)
