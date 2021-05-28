@@ -22,6 +22,8 @@ class Lexer:
             token = Token(TokenType.ASSIGN, self._character)
         elif match(r'^\+$', self._character):  # valida el token de suma
             token = Token(TokenType.PLUS, self._character)
+        elif match(r'^-$', self._character):  # valida el token de resta
+            token = Token(TokenType.MINUS, self._character)
         elif match(r'^$', self._character):  # valida el token vació o final
             token = Token(TokenType.EOF, self._character)
         elif match(r'^\($', self._character):  # valida el token el (
@@ -38,6 +40,14 @@ class Lexer:
             token = Token(TokenType.SEMICOLON, self._character)
         elif match(r'^<$', self._character):  # valida el token el <
             token = Token(TokenType.LT, self._character)
+        elif match(r'^>$', self._character):  # valida el token el >
+            token = Token(TokenType.GT, self._character)
+        elif match(r'^/$', self._character):  # valida el token el /
+            token = Token(TokenType.DIVISION, self._character)
+        elif match(r'^\*$', self._character):  # valida el token el *
+            token = Token(TokenType.MULTIPLICATION, self._character)
+        elif match(r'^!$', self._character):  # valida el token el !
+            token = Token(TokenType.NEGATION, self._character)
         elif self._is_letter(self._character):
             literal = self._read_identifier()
             token_type = lookup_token_type(literal)

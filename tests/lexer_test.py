@@ -31,11 +31,17 @@ class LexerTest(TestCase):
         self.validate_tes(source, expected_tokens)
 
     def test_one_character_operator(self) -> None:
-        source: str = '=+'
+        source: str = '=+-/*<>!'
 
         expected_tokens: List[Token] = [
             Token(TokenType.ASSIGN, '='),
             Token(TokenType.PLUS, '+'),
+            Token(TokenType.MINUS, '-'),
+            Token(TokenType.DIVISION, '/'),
+            Token(TokenType.MULTIPLICATION, '*'),
+            Token(TokenType.LT, '<'),
+            Token(TokenType.GT, '>'),
+            Token(TokenType.NEGATION, '!'),
         ]
 
         self.validate_tes(source, expected_tokens)
@@ -153,4 +159,4 @@ class LexerTest(TestCase):
             Token(TokenType.SEMICOLON, ';'),
             Token(TokenType.RBRACE, '}'),
         ]
-        self.validate_tes(source,expected_tokens)
+        self.validate_tes(source, expected_tokens)
